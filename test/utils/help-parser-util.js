@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -12,6 +11,6 @@ import _ from 'lodash';
 export default function parse(help) {
   return _.chain(help.split('\n'))
     .reject(line => line.startsWith('==') || !_.identity(line))
-    .map(line => (/^([a-z]+)/).exec(line)[1])
+    .map(line => /^([a-z]+)/.exec(line)[1])
     .value();
 }

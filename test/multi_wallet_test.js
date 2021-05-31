@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -39,7 +38,7 @@ describe('Multi Wallet', () => {
     });
 
     describe('getMemoryInfo()', () => {
-      it('should return information about the node\'s memory usage', async () => {
+      it("should return information about the node's memory usage", async () => {
         const info = await client.getMemoryInfo();
 
         info.should.have.keys('locked');
@@ -68,7 +67,7 @@ describe('Multi Wallet', () => {
     });
 
     describe('getBalance()', () => {
-      it('should return the total server\'s balance', async () => {
+      it("should return the total server's balance", async () => {
         const balance = await client.getBalance();
 
         balance.should.be.aboveOrEqual(0);
@@ -117,16 +116,7 @@ describe('Multi Wallet', () => {
           value.label.should.equal('listspecificcount');
           // Only a small subset of transaction properties are being asserted here to make
           // sure we've received a transaction and not an empty object instead.
-          value.should.have.keys(
-            'label',
-            'address',
-            'amount',
-            'category',
-            'confirmations',
-            'time',
-            'txid',
-            'vout'
-          );
+          value.should.have.keys('label', 'address', 'amount', 'category', 'confirmations', 'time', 'txid', 'vout');
         });
         transactions.length.should.be.greaterThanOrEqual(5);
       });
@@ -147,16 +137,7 @@ describe('Multi Wallet', () => {
 
           // Only a small subset of transaction properties are being asserted here to make
           // sure we've received a transaction and not an empty object instead.
-          value.should.have.keys(
-            'label',
-            'address',
-            'amount',
-            'category',
-            'confirmations',
-            'time',
-            'txid',
-            'vout'
-          );
+          value.should.have.keys('label', 'address', 'amount', 'category', 'confirmations', 'time', 'txid', 'vout');
         });
       });
 
@@ -182,16 +163,7 @@ describe('Multi Wallet', () => {
           value.label.should.equal('testlistwithparams');
           // Only a small subset of transaction properties are being asserted here to make
           // sure we've received a transaction and not an empty object instead.
-          value.should.have.keys(
-            'label',
-            'address',
-            'amount',
-            'category',
-            'confirmations',
-            'time',
-            'txid',
-            'vout'
-          );
+          value.should.have.keys('label', 'address', 'amount', 'category', 'confirmations', 'time', 'txid', 'vout');
         });
       });
     });
@@ -222,11 +194,7 @@ describe('Multi Wallet', () => {
   describe('batched requests', () => {
     // Waiting for 0.15.x with a fix for batched requests in a multiwallet context.
     it.skip('should support batched requests', async () => {
-      const batch = [
-        { method: 'getbalance' },
-        { method: 'listwallets' },
-        { method: 'listwallets' }
-      ];
+      const batch = [{ method: 'getbalance' }, { method: 'listwallets' }, { method: 'listwallets' }];
 
       const response = await client.command(batch);
 

@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -16,8 +15,8 @@ export default class Requester {
   }
 
   /**
-  * Prepare rpc request.
-  */
+   * Prepare rpc request.
+   */
 
   prepare({ method, parameters = [], suffix }) {
     method = method.toLowerCase();

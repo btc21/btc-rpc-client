@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -53,7 +52,11 @@ export default class Parser {
   rpc(response) {
     // The RPC api returns a `text/html; charset=ISO-8859-1` encoded response with an empty string as the body
     // when an error occurs.
-    if (typeof response.body === 'string' && response.headers['content-type'] !== 'application/json' && response.statusCode !== 200) {
+    if (
+      typeof response.body === 'string' &&
+      response.headers['content-type'] !== 'application/json' &&
+      response.statusCode !== 200
+    ) {
       throw new RpcError(response.statusCode, response.statusMessage, { body: response.body });
     }
 

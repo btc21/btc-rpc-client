@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -25,17 +24,20 @@ const networks = {
  * Promisify helper.
  */
 
-const promisify = fn => (...args) => new Promise((resolve, reject) => {
-  fn(...args, (error, value) => {
-    if (error) {
-      reject(error);
+const promisify =
+  fn =>
+  (...args) =>
+    new Promise((resolve, reject) => {
+      fn(...args, (error, value) => {
+        if (error) {
+          reject(error);
 
-      return;
-    }
+          return;
+        }
 
-    resolve(value);
-  });
-});
+        resolve(value);
+      });
+    });
 
 /**
  * Constructor.
@@ -90,16 +92,24 @@ class Client {
     }
 
     this.version = version;
-    this.methods = _.transform(methods, (result, method, name) => {
-      result[_.toLower(name)] = {
-        features: _.transform(method.features, (result, constraint, name) => {
-          result[name] = {
-            supported: version ? semver.satisfies(version, constraint) : true
-          };
-        }, {}),
-        supported: version ? semver.satisfies(version, method.version) : true
-      };
-    }, {});
+    this.methods = _.transform(
+      methods,
+      (result, method, name) => {
+        result[_.toLower(name)] = {
+          features: _.transform(
+            method.features,
+            (result, constraint, name) => {
+              result[name] = {
+                supported: version ? semver.satisfies(version, constraint) : true
+              };
+            },
+            {}
+          ),
+          supported: version ? semver.satisfies(version, method.version) : true
+        };
+      },
+      {}
+    );
 
     const request = requestLogger(logger);
 
@@ -130,11 +140,13 @@ class Client {
         return _.get(this.methods[command.method], 'features.multiwallet.supported', false) === true;
       });
 
-      body = input.map((method, index) => this.requester.prepare({
-        method: method.method,
-        parameters: method.parameters,
-        suffix: index
-      }));
+      body = input.map((method, index) =>
+        this.requester.prepare({
+          method: method.method,
+          parameters: method.parameters,
+          suffix: index
+        })
+      );
     } else {
       if (this.hasNamedParametersSupport && parameters.length === 1 && _.isPlainObject(parameters[0])) {
         parameters = parameters[0];
@@ -144,11 +156,13 @@ class Client {
       body = this.requester.prepare({ method: input, parameters });
     }
 
-    return this.parser.rpc(await this.request.postAsync({
-      auth: _.pickBy(this.auth, _.identity),
-      body: JSON.stringify(body),
-      uri: `${multiwallet && this.wallet ? `/wallet/${this.wallet}` : '/'}`
-    }));
+    return this.parser.rpc(
+      await this.request.postAsync({
+        auth: _.pickBy(this.auth, _.identity),
+        body: JSON.stringify(body),
+        uri: `${multiwallet && this.wallet ? `/wallet/${this.wallet}` : '/'}`
+      })
+    );
   }
 
   /**
@@ -156,10 +170,13 @@ class Client {
    */
 
   async getTransactionByHash(hash, { extension = 'json' } = {}) {
-    return this.parser.rest(extension, await this.request.getAsync({
-      encoding: extension === 'bin' ? null : undefined,
-      url: `/rest/tx/${hash}.${extension}`
-    }));
+    return this.parser.rest(
+      extension,
+      await this.request.getAsync({
+        encoding: extension === 'bin' ? null : undefined,
+        url: `/rest/tx/${hash}.${extension}`
+      })
+    );
   }
 
   /**
@@ -198,14 +215,16 @@ class Client {
   /**
    * Query unspent transaction outputs for a given set of outpoints.
    * See BIP64 for input and output serialisation:
-   * 	 - https://github.com/bitcoin/bips/blob/master/bip-0064.mediawiki
+   *    - https://github.com/bitcoin/bips/blob/master/bip-0064.mediawiki
    */
 
   async getUnspentTransactionOutputs(outpoints, { extension = 'json' } = {}) {
     const encoding = extension === 'bin' ? null : undefined;
-    const sets = _.flatten([outpoints]).map(outpoint => {
-      return `${outpoint.id}-${outpoint.index}`;
-    }).join('/');
+    const sets = _.flatten([outpoints])
+      .map(outpoint => {
+        return `${outpoint.id}-${outpoint.index}`;
+      })
+      .join('/');
     const url = `/rest/getutxos/checkmempool/${sets}.${extension}`;
 
     return this.parser.rest(extension, await this.request.getAsync({ encoding, url }));

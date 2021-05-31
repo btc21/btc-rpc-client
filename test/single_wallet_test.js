@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -39,7 +38,7 @@ describe('Single Wallet', () => {
     });
 
     describe('getMemoryInfo()', () => {
-      it('should return information about the node\'s memory usage', async () => {
+      it("should return information about the node's memory usage", async () => {
         const info = await client.getMemoryInfo();
 
         info.should.have.keys('locked');
@@ -70,7 +69,7 @@ describe('Single Wallet', () => {
     });
 
     describe('getBalance()', () => {
-      it('should return the total server\'s balance', async () => {
+      it("should return the total server's balance", async () => {
         const balance = await client.getBalance();
 
         balance.should.be.aboveOrEqual(0);
@@ -116,16 +115,7 @@ describe('Single Wallet', () => {
         transactions.should.matchEach(value => {
           // Only a small subset of transaction properties are being asserted here to make
           // sure we've received a transaction and not an empty object instead.
-          value.should.have.keys(
-            'label',
-            'address',
-            'amount',
-            'category',
-            'confirmations',
-            'time',
-            'txid',
-            'vout'
-          );
+          value.should.have.keys('label', 'address', 'amount', 'category', 'confirmations', 'time', 'txid', 'vout');
         });
       });
 
@@ -153,11 +143,7 @@ describe('Single Wallet', () => {
 
   describe('batched requests', () => {
     it('should support batched requests', async () => {
-      const batch = [
-        { method: 'listwallets' },
-        { method: 'listwallets' },
-        { method: 'listwallets' }
-      ];
+      const batch = [{ method: 'listwallets' }, { method: 'listwallets' }, { method: 'listwallets' }];
       const response = await client.command(batch);
 
       // 0.17 for some reason has wallets shown as ''
@@ -166,7 +152,10 @@ describe('Single Wallet', () => {
     });
 
     it('should support request parameters in batched requests', async () => {
-      const batch = [{ method: 'getnewaddress' }, { method: 'validateaddress', parameters: ['mkteeBFmGkraJaWN5WzqHCjmbQWVrPo5X3'] }];
+      const batch = [
+        { method: 'getnewaddress' },
+        { method: 'validateaddress', parameters: ['mkteeBFmGkraJaWN5WzqHCjmbQWVrPo5X3'] }
+      ];
 
       const [newAddress, addressValidation] = await client.command(batch);
 
@@ -175,7 +164,10 @@ describe('Single Wallet', () => {
     });
 
     it('should return an error if one of the request fails', async () => {
-      const batch = [{ method: 'validateaddress' }, { method: 'validateaddress', parameters: ['mkteeBFmGkraJaWN5WzqHCjmbQWVrPo5X3'] }];
+      const batch = [
+        { method: 'validateaddress' },
+        { method: 'validateaddress', parameters: ['mkteeBFmGkraJaWN5WzqHCjmbQWVrPo5X3'] }
+      ];
 
       const [validateAddressError, validateAddress] = await client.command(batch);
 

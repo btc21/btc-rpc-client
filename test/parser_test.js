@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -74,10 +73,7 @@ describe('Parser', () => {
     });
 
     it('should return the response headers if `headers` is enabled and batching is used', async () => {
-      const batch = [
-        { method: 'getbalance' },
-        { method: 'getbalance' }
-      ];
+      const batch = [{ method: 'getbalance' }, { method: 'getbalance' }];
       const [addresses, headers] = await new Client(defaults({ headers: true }, config.bitcoin)).command(batch);
 
       addresses.should.have.length(batch.length);

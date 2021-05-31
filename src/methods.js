@@ -445,8 +445,30 @@ export default {
     },
     obfuscate: {
       request: {
-        default: params => set(params, '[0]', map(params[0], request => set(request, 'keys', map(request.keys, () => '******')))),
-        named: params => set(params, 'requests', map(params.requests, request => set(request, 'keys', map(request.keys, () => '******'))))
+        default: params =>
+          set(
+            params,
+            '[0]',
+            map(params[0], request =>
+              set(
+                request,
+                'keys',
+                map(request.keys, () => '******')
+              )
+            )
+          ),
+        named: params =>
+          set(
+            params,
+            'requests',
+            map(params.requests, request =>
+              set(
+                request,
+                'keys',
+                map(request.keys, () => '******')
+              )
+            )
+          )
       }
     },
     version: '>=0.14.0'
@@ -729,8 +751,18 @@ export default {
     category: 'rawtransactions',
     obfuscate: {
       request: {
-        default: params => set([...params], '[2]', map(params[2], () => '******')),
-        named: params => set(params, 'privkeys', map(params.privkeys || [], () => '******'))
+        default: params =>
+          set(
+            [...params],
+            '[2]',
+            map(params[2], () => '******')
+          ),
+        named: params =>
+          set(
+            params,
+            'privkeys',
+            map(params.privkeys || [], () => '******')
+          )
       }
     },
     version: '>=0.7.0 <0.18.0'
@@ -739,8 +771,18 @@ export default {
     category: 'rawtransactions',
     obfuscate: {
       request: {
-        default: params => set([...params], '[1]', map(params[1], () => '******')),
-        named: params => set(params, 'privkeys', map(params.privkeys || [], () => '******'))
+        default: params =>
+          set(
+            [...params],
+            '[1]',
+            map(params[1], () => '******')
+          ),
+        named: params =>
+          set(
+            params,
+            'privkeys',
+            map(params.privkeys || [], () => '******')
+          )
       }
     },
     version: '>=0.17.0'

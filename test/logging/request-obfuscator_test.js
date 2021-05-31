@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -28,11 +27,16 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate all private keys from `request.body` when `method` is `importmulti`', () => {
-      const request = { body: '{"id":"1485369469422","method":"importmulti","params":[[{"address":"foobar","keys":["myprivate1","myprivate2"]},{"address":"foobar2","keys":["myprivate1","myprivate2"]}]]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"importmulti","params":[[{"address":"foobar","keys":["myprivate1","myprivate2"]},{"address":"foobar2","keys":["myprivate1","myprivate2"]}]]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('{"id":"1485369469422","method":"importmulti","params":[[{"address":"foobar","keys":["******","******"]},{"address":"foobar2","keys":["******","******"]}]]}');
+      request.body.should.eql(
+        '{"id":"1485369469422","method":"importmulti","params":[[{"address":"foobar","keys":["******","******"]},{"address":"foobar2","keys":["******","******"]}]]}'
+      );
     });
 
     it('should obfuscate the private key from `request.body` when `method` is `importprivkey`', () => {
@@ -44,7 +48,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the private key from `request.body` when `method` is `importprivkey` and RPC is called with named parameters', () => {
-      const request = { body: '{"id":"1485369469422","method":"importprivkey","params":{"privkey":"foobar"}}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"importprivkey","params":{"privkey":"foobar"}}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -52,7 +59,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the private key from `request.body` when `method` is `signmessagewithprivkey`', () => {
-      const request = { body: '{"id":"1485369469422","method":"signmessagewithprivkey","params":["foobar", "foobiz"]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"signmessagewithprivkey","params":["foobar", "foobiz"]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -60,63 +70,88 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the private key from `request.body` when `method` is `signmessagewithprivkey` and RPC is called with named parameters', () => {
-      const request = { body: '{"id":"1485369469422","method":"signmessagewithprivkey","params":{"privkey":"foobar","message":"foobiz"}}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"signmessagewithprivkey","params":{"privkey":"foobar","message":"foobiz"}}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('{"id":"1485369469422","method":"signmessagewithprivkey","params":{"privkey":"******","message":"foobiz"}}');
+      request.body.should.eql(
+        '{"id":"1485369469422","method":"signmessagewithprivkey","params":{"privkey":"******","message":"foobiz"}}'
+      );
     });
 
     it('should obfuscate all private keys from `request.body` when `method` is `signrawtransaction`', () => {
-      const request = { body: '{"id":"1485369469422","method":"signrawtransaction","params":["foo","bar",["biz", "boz"]]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"signrawtransaction","params":["foo","bar",["biz", "boz"]]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('{"id":"1485369469422","method":"signrawtransaction","params":["foo","bar",["******","******"]]}');
+      request.body.should.eql(
+        '{"id":"1485369469422","method":"signrawtransaction","params":["foo","bar",["******","******"]]}'
+      );
     });
 
     it('should obfuscate all private keys from `request.body` when `method` is `signrawtransaction` and RPC is called with named parameters', () => {
-      const request = { body: `{"id":"1485369469422","method":"signrawtransaction","params":${JSON.stringify({
-        hexstring: 'foo',
-        prevtxs: [],
-        privkeys: ['foo', 'bar'],
-        sighashtype: 'bar'
-      })}}`, type: 'request' };
+      const request = {
+        body: `{"id":"1485369469422","method":"signrawtransaction","params":${JSON.stringify({
+          hexstring: 'foo',
+          prevtxs: [],
+          privkeys: ['foo', 'bar'],
+          sighashtype: 'bar'
+        })}}`,
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql(`{"id":"1485369469422","method":"signrawtransaction","params":${JSON.stringify({
-        hexstring: 'foo',
-        prevtxs: [],
-        privkeys: ['******', '******'],
-        sighashtype: 'bar'
-      })}}`);
+      request.body.should.eql(
+        `{"id":"1485369469422","method":"signrawtransaction","params":${JSON.stringify({
+          hexstring: 'foo',
+          prevtxs: [],
+          privkeys: ['******', '******'],
+          sighashtype: 'bar'
+        })}}`
+      );
     });
 
     it('should obfuscate all private keys from `request.body` when `method` is `signrawtransactionwithkey`', () => {
-      const request = { body: '{"id":"1485369469422","method":"signrawtransactionwithkey","params":["foo",["biz", "boz"], "bar"]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"signrawtransactionwithkey","params":["foo",["biz", "boz"], "bar"]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('{"id":"1485369469422","method":"signrawtransactionwithkey","params":["foo",["******","******"],"bar"]}');
+      request.body.should.eql(
+        '{"id":"1485369469422","method":"signrawtransactionwithkey","params":["foo",["******","******"],"bar"]}'
+      );
     });
 
     it('should obfuscate all private keys from `request.body` when `method` is `signrawtransactionwithkey` and RPC is called with named parameters', () => {
-      const request = { body: `{"id":"1485369469422","method":"signrawtransactionwithkey","params":${JSON.stringify({
-        hexstring: 'foo',
-        prevtxs: [],
-        privkeys: ['foo', 'bar'],
-        sighashtype: 'bar'
-      })}}`, type: 'request' };
+      const request = {
+        body: `{"id":"1485369469422","method":"signrawtransactionwithkey","params":${JSON.stringify({
+          hexstring: 'foo',
+          prevtxs: [],
+          privkeys: ['foo', 'bar'],
+          sighashtype: 'bar'
+        })}}`,
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql(`{"id":"1485369469422","method":"signrawtransactionwithkey","params":${JSON.stringify({
-        hexstring: 'foo',
-        prevtxs: [],
-        privkeys: ['******', '******'],
-        sighashtype: 'bar'
-      })}}`);
+      request.body.should.eql(
+        `{"id":"1485369469422","method":"signrawtransactionwithkey","params":${JSON.stringify({
+          hexstring: 'foo',
+          prevtxs: [],
+          privkeys: ['******', '******'],
+          sighashtype: 'bar'
+        })}}`
+      );
     });
 
     it('should obfuscate the passphrase from `request.body` when `method` is `encryptwallet`', () => {
@@ -128,7 +163,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the passphrase from `request.body` when `method` is `encryptwallet` and RPC is called with named parameters', () => {
-      const request = { body: '{"id":"1485369469422","method":"encryptwallet","params":{"passphrase":"foobar"}}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"encryptwallet","params":{"passphrase":"foobar"}}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -136,7 +174,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the passphrase from `request.body` when `method` is `walletpassphrase`', () => {
-      const request = { body: '{"id":"1485369469422","method":"walletpassphrase","params":["foobar"]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"walletpassphrase","params":["foobar"]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -144,7 +185,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the passphrase from `request.body` when `method` is `walletpassphrase` and RPC is called with named parameters', () => {
-      const request = { body: '{"id":"1485369469422","method":"walletpassphrase","params":{"passphrase":"foobar"}}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"walletpassphrase","params":{"passphrase":"foobar"}}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -152,7 +196,10 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the oldpassphrase and newpassphrase from `request.body` when `method` is `walletpassphrasechange`', () => {
-      const request = { body: '{"id":"1485369469422","method":"walletpassphrasechange","params":["foobar", "foobiz"]}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"walletpassphrasechange","params":["foobar", "foobiz"]}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
@@ -160,19 +207,29 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the oldpassphrase and newpassphrase from `request.body` when `method` is `walletpassphrasechange` and RPC is called with named parameters', () => {
-      const request = { body: '{"id":"1485369469422","method":"walletpassphrasechange","params":{"oldpassphrase":"foobar","newpassphrase":"foobar"}}', type: 'request' };
+      const request = {
+        body: '{"id":"1485369469422","method":"walletpassphrasechange","params":{"oldpassphrase":"foobar","newpassphrase":"foobar"}}',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('{"id":"1485369469422","method":"walletpassphrasechange","params":{"oldpassphrase":"******","newpassphrase":"******"}}');
+      request.body.should.eql(
+        '{"id":"1485369469422","method":"walletpassphrasechange","params":{"oldpassphrase":"******","newpassphrase":"******"}}'
+      );
     });
 
     it('should obfuscate the `request.body` of a batch request', () => {
-      const request = { body: '[{"id":"1485369469422","method":"walletpassphrase","params":["foobar"]},{"id":"1485369469423","method":"walletpassphrase","params":["foobar"]}]', type: 'request' };
+      const request = {
+        body: '[{"id":"1485369469422","method":"walletpassphrase","params":["foobar"]},{"id":"1485369469423","method":"walletpassphrase","params":["foobar"]}]',
+        type: 'request'
+      };
 
       obfuscate(request);
 
-      request.body.should.eql('[{"id":"1485369469422","method":"walletpassphrase","params":["******"]},{"id":"1485369469423","method":"walletpassphrase","params":["******"]}]');
+      request.body.should.eql(
+        '[{"id":"1485369469422","method":"walletpassphrase","params":["******"]},{"id":"1485369469423","method":"walletpassphrase","params":["******"]}]'
+      );
     });
 
     it('should obfuscate the private key from `body` when `method` is `dumpprivkey`', () => {
@@ -184,14 +241,18 @@ describe('RequestObfuscator', () => {
     });
 
     it('should obfuscate the `body` when `headers.content-type` is `application/octet-stream`', () => {
-      const request = { body: new Buffer('foobar'), headers: { 'content-type': 'application/octet-stream' }, type: 'response' };
+      const request = {
+        body: new Buffer('foobar'),
+        headers: { 'content-type': 'application/octet-stream' },
+        type: 'response'
+      };
 
       obfuscate(request, { uri: 'foobar.bin' });
 
       request.should.eql({ body: '******', headers: { 'content-type': 'application/octet-stream' }, type: 'response' });
     });
 
-    it('should obfuscate the `request.body` of a batch request', () => {
+    it('should obfuscate the `request.body` of a batch request, again', () => {
       const request = {
         body: JSON.stringify([
           { id: '1485369469422-0', result: 'foobar' },
@@ -201,7 +262,9 @@ describe('RequestObfuscator', () => {
         type: 'response'
       };
 
-      obfuscate(request, { body: '[{"id":"1485369469422-0","method":"dumpprivkey","params":["foobar"]},{"id":"1485369469422-2","method":"getnewaddress","params":["foobiz"]},{"id":"1485369469422-1","method":"dumpprivkey","params":["foobiz"]}]' });
+      obfuscate(request, {
+        body: '[{"id":"1485369469422-0","method":"dumpprivkey","params":["foobar"]},{"id":"1485369469422-2","method":"getnewaddress","params":["foobiz"]},{"id":"1485369469422-1","method":"dumpprivkey","params":["foobiz"]}]'
+      });
 
       JSON.parse(request.body).should.eql([
         { id: '1485369469422-0', result: '******' },
