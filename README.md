@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This repository was created for the needs of [Bitcoin Explorer aka btc-rpc-explorer](https://github.com/janoside/btc-rpc-explorer). Since the time of its creation (forking from another repository), Bitcoin Explorer has been modified to no longer require this code. As such, it is no longer needed and will not in any way be maintained.
+
 # bitcoin-core
 A modern Bitcoin Core REST and RPC client to execute administrative tasks, [multiwallet](https://bitcoincore.org/en/2017/09/01/release-0.15.0/#multiwallet) operations and queries about network and the blockchain.
 
